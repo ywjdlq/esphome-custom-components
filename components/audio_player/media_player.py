@@ -66,20 +66,19 @@ CONFIG_SCHEMA = cv.All(
     cv.has_exactly_one_key(CONF_I2S_NO_DAC, CONF_I2S)
 )
 
+
 async def to_code(config):
     var = cg.new_Pvariable(config[CONF_ID])
-    
+
     cg.add_library("SPI", None)
-    if CORE.is_esp8266:
-        cg.add_library("ESP8266SdFat", None)
-        cg.add_library("SDFS", None)
-        cg.add_library("ESP8266Audio", "1.9.7")
-    elif CORE.is_esp32:
+    if CORE.is_esp32:
         cg.add_library("WiFi", None)
         cg.add_library("WiFiClientSecure", None)
         cg.add_library("FS", None)
-        # 针对 ESP32（含 ESP32-S3）使用专用的音频库，版本号可根据实际情况调整
-        cg.add_library("ESP32Audio", "1.0.0")
+    if CORE.is_esp8266:
+        cg.add_library("ESP8266SdFat", None)
+        cg.add_library("SDFS", None)
+    cg.add_library("ESP8266Audio", "1.9.7")
 
     await cg.register_component(var, config)
     await media_player.register_media_player(var, config)
@@ -90,6 +89,7 @@ async def to_code(config):
     if CONF_I2S_NO_DAC in config:
         params = config[CONF_I2S_NO_DAC]
         output = cg.new_Pvariable(params[CONF_ID])
+    
     elif CONF_I2S in config:
         params = config[CONF_I2S]
         output = cg.new_Pvariable(params[CONF_ID])
