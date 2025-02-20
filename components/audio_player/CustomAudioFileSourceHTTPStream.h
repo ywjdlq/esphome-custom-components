@@ -21,11 +21,7 @@
 #pragma once
 #include <string>
 #include <Arduino.h>
-#ifdef USE_ESP32
 #include <HTTPClient.h>
-#else
-#include <ESP8266HTTPClient.h>
-#endif
 #include "AudioFileSource.h"
 
 namespace esphome {
