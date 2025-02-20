@@ -182,7 +182,7 @@ void AudioMediaPlayer::play(const std::string &url) {
 
   this->file_ = http_stream;
   this->buffer_ = new AudioFileSourceBuffer(file_, buffer_size_);
-  this->generator_ = new AudioGeneratorWAV();
+  this->generator_ = generator_;
 
   file_->RegisterStatusCB(StatusCallback, (void *) "file");
   buffer_->RegisterStatusCB(StatusCallback, (void *) "buffer");
